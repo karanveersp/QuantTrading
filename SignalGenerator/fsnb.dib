@@ -1,0 +1,26 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"fsharp","items":[{"aliases":[],"languageName":"fsharp","name":"fsharp"}]}}
+
+#!markdown
+
+# Plotly charting with F#
+
+#!fsharp
+
+#r "nuget: Plotly.NET"
+#r "nuget: newtonsoft.json"
+#r "nuget: Plotly.NET.Interactive"
+#r "nuget: Deedle, 3.0.0"
+
+open Plotly.NET
+open System
+open Deedle
+
+#!fsharp
+
+let df = Frame.ReadCsv<DateTime>("BTCUSD-OneHour-11-1-23-till-2-27-24.csv", indexCol="Key")
+
+let dow = df.Rows |> Series.map (fun dt _ -> dt.DayOfWeek.ToString())
+let withDays = df |> Frame.addCol "DayOfWeek" dow
+withDays.Print()
